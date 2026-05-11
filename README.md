@@ -2,91 +2,111 @@
 
 ## 💡 Why This Project?
 
-During my studies, I kept asking a simple question:  
-If macros run at compile-time without a runtime stack — what actually enforces variable isolation?
+During my studies, I became interested in how compile-time systems enforce isolation rules internally.
 
-Instead of only exploring this theoretically, I built a small automated experiment to test it in practice.
+One question kept bothering me:
 
----
+> If macros execute during compilation without a traditional runtime stack, what actually enforces variable isolation and scope separation?
 
-## 🎯 The Research Question
-
-> During macro expansion (compile-time), how is variable isolation maintained without a traditional runtime stack?
-
-To explore this, I used SBCL (Steel Bank Common Lisp) and built an automated testing workflow.
+Instead of approaching this only theoretically, I designed a small automated research experiment around SBCL (Steel Bank Common Lisp) to explore compiler behavior in practice.
 
 ---
 
-## 🛠️ Methodology: AI-Assisted Testing
+## 🎯 Research Goal
 
-Instead of writing tests manually, I used AI tools (GitHub Copilot) to help generate structured Lisp inputs.
+The goal of this project was to explore how SBCL handles:
 
-A simple Python-based script was used to:
+* lexical vs dynamic scope interactions
+* macro expansion behavior
+* symbol handling edge cases
+* compiler stability under unusual structured inputs
 
-- execute SBCL with generated inputs  
-- automate repeated testing  
-- observe crashes and unexpected behavior  
+This was approached as a lightweight AI-assisted fuzzing and behavior exploration project.
+
+---
+
+## 🛠️ Methodology: AI-Assisted Research
+
+To accelerate experimentation, I used AI-assisted tooling (GitHub Copilot / Claude Agent in Copilot) to help generate structured Lisp test inputs and automate repetitive testing workflows.
+
+The research process itself — including hypothesis selection, experiment direction, target selection, and result analysis — was performed manually.
+
+A lightweight Python harness was used to:
+
+* execute SBCL with generated inputs
+* automate repeated test execution
+* monitor crashes, hangs, and unexpected behavior
+* iterate quickly over structured edge-case scenarios
 
 ---
 
 ## 🔍 Key Observations
 
-Through this process, I identified several interesting edge cases:
+During testing, several interesting edge cases and unexpected behaviors were identified:
 
-1. **Scope Interaction Behavior**  
-   In some cases, dynamic binding (`proclaim special`) affected expected lexical behavior.
+### 1. Scope Interaction Behavior
 
-2. **Extreme Input Handling**  
-   Very long symbol names caused reproducible crashes.
+Certain combinations involving dynamic binding (`proclaim special`) produced behavior that interacted unexpectedly with lexical assumptions during macro-related flows.
 
-3. **Macro Expansion Limits**  
-   Deep or recursive macro usage could lead to resource exhaustion.
+### 2. Extreme Input Handling
 
-> These are presented as **unexpected behaviors and edge cases**, not confirmed security vulnerabilities.
+Very long symbol names triggered reproducible instability and crash conditions.
 
----
+### 3. Macro Expansion Limits
 
-## 📂 Repository Contents
+Deep or recursive macro expansion patterns could lead to resource exhaustion and compiler stress conditions.
 
-- `automation/` – Python script used for automated testing  
-- `RESEARCH_ROADMAP.md` – exploration plan and ideas  
-- `analysis/` – initial notes and experiments  
+> These findings are presented as compiler edge cases and unexpected behaviors, not confirmed security vulnerabilities.
+
+Some behaviors were reported as security-relevant observations (CERT-IL #11265).
 
 ---
 
-## 🧪 Approach
+## 🧪 Research Approach
 
-### 1. Hypothesis
+### 1. Hypothesis-Driven Exploration
 
-Macros operate at compile-time and do not rely on a runtime call stack.  
-This raises the question: can scope-related assumptions be affected during expansion?
+Rather than performing fully random fuzzing, the project focused on targeted experimentation around:
+
+* scope isolation
+* compile-time execution behavior
+* symbol resolution
+* macro expansion mechanics
+
+### 2. Structured Input Generation
+
+AI-assisted tooling was used to accelerate generation of structured test cases and edge-condition variations.
+
+This significantly reduced manual effort and enabled rapid iteration.
+
+### 3. Automated Execution
+
+A Python wrapper automated:
+
+* SBCL subprocess execution
+* input feeding
+* crash observation
+* output/error collection
 
 ---
 
-### 2. Experimentation Strategy
+## 📂 Repository Structure
 
-Instead of random inputs, I focused on structured test patterns targeting:
-
-- scoping rules (lexical vs dynamic)  
-- symbol handling  
-- macro expansion behavior  
-
-AI tools were used to accelerate test generation and iteration.
-
----
-
-### 3. Execution
-
-A lightweight Python wrapper was used to:
-
-- run SBCL as a subprocess  
-- feed generated inputs  
-- monitor output, errors, and crashes  
+* `automation/` — Python automation harness
+* `analysis/` — research notes and observations
+* `RESEARCH_ROADMAP.md` — hypotheses, ideas, and exploration directions
 
 ---
 
 ## 📘 What I Learned
 
-- How to design small experiments to test system behavior  
-- How to use automation to scale repetitive testing  
-- How AI tools can accelerate exploration of unfamiliar domains  
+This project helped me develop practical experience in:
+
+* hypothesis-driven security research
+* lightweight fuzzing methodology
+* automation for behavioral testing
+* compiler/runtime experimentation
+* structured edge-case exploration
+* AI-assisted research workflows
+
+It also demonstrated how AI-assisted tooling can accelerate exploratory research while still requiring human-driven analysis, validation, and direction.
